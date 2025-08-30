@@ -111,7 +111,7 @@ def get_header_index_any_match(headers, names):
             return headers.index(n)
         except ValueError:
             continue
-    raise ValueError(f"Unabled to find column named one of: {names}")
+    raise ValueError(f"Unabled to find column named one of: {names} (headers={headers!r})")
 
 
 def dedup_and_flag_discrepancies(items, key="id", print_suffix=""):
@@ -242,7 +242,7 @@ def extract_pgns(wb):
 
     spn_id_col = get_header_index_any_match(headers, "SPN")
     spn_position_col = get_header_index_any_match(
-        headers, ["SPN_POSITION_IN_PGN", "SP_POSITION_IN_PG"]
+        headers, ["SPN_POSITION_IN_PGN", "SP_POSITION_IN_PG", "SPN Position in PG", "SPN_POSITION_IN_PG"]
     )
     document_col = get_header_index_any_match(
         headers, ["PGN_DOCUMENT", "PG_DOCUMENT"]
