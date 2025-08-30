@@ -90,7 +90,7 @@ def scalar_value_from_dict(d: Dict) -> ScalarValue:
         data_range.get("min", None),
         data_range.get("max", None),
         offset,
-        resolution,
+        resolution if isinstance(resolution, int | float) else None,
         bit_length,
     )
 
