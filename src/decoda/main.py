@@ -573,6 +573,11 @@ def extract_value_at_location(payload, location, bit_length):
 
 
 @attr.s(frozen=True)
+class UnknownPGN:
+    id = attr.ib()
+
+
+@attr.s(frozen=True)
 class PGN:
     id = attr.ib()
     name = attr.ib()

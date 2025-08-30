@@ -1,7 +1,9 @@
 # Copyright Andrew Dodd
 import attr
 
-from .main import Address
+from .main import Address, UnknownPGN
+from .exceptions import UnknownReferenceError
+from .spec_loader import J1939Spec
 
 
 def parts_from_pgn(pgn):
@@ -36,7 +38,7 @@ class Message:
 
 
 class Decoda:
-    def __init__(self, spec, callback=None, error_handler=None):
+    def __init__(self, spec: J1939Spec, callback=None, error_handler=None):
         self.__spec__ = spec
         self._callback = callback if callback else lambda x: print(x)
         self._handle_error = (
@@ -63,6 +65,9 @@ class Decoda:
             decoded = pgn.decode(payload)
 
             self._callback(Message(priority, sa, da, pgn, decoded))
+        except UnknownReferenceError:
+            pgn = UnknownPGN(pgn_id)
+            self._callback(Message(priority, sa, da, pgn, []))
         except ValueError as e:
             self._handle_error(e)
 
@@ -71,6 +76,9 @@ class Decoda:
             pgn = self.__spec__.PGNs.get_by_id(pgn_id)
             decoded = pgn.decode(payload)
             self._callback(Message(priority, sa, da, pgn, decoded))
+        except UnknownReferenceError:
+            pgn = UnknownPGN(pgn_id)
+            self._callback(Message(priority, sa, da, pgn, []))
         except ValueError as e:
             self._handle_error(e)
 
