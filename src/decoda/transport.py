@@ -66,7 +66,7 @@ class Decoda:
 
             self._callback(Message(priority, sa, da, pgn, decoded))
         except UnknownReferenceError:
-            pgn = UnknownPGN(pgn_id)
+            pgn = UnknownPGN(pgn_id, payload)
             self._callback(Message(priority, sa, da, pgn, []))
         except ValueError as e:
             self._handle_error(e)
@@ -77,7 +77,7 @@ class Decoda:
             decoded = pgn.decode(payload)
             self._callback(Message(priority, sa, da, pgn, decoded))
         except UnknownReferenceError:
-            pgn = UnknownPGN(pgn_id)
+            pgn = UnknownPGN(pgn_id, payload)
             self._callback(Message(priority, sa, da, pgn, []))
         except ValueError as e:
             self._handle_error(e)
